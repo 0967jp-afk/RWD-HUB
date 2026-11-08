@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RWD-Hub — данные остаются в клинике, исследования идут</title>
+<meta name="description" content="RWD-Hub — федеративная инфраструктура для безопасного доступа к обезличенным медицинским данным: RWE-исследования без передачи данных за пределы защищённого контура.">
+<meta property="og:title" content="RWD-Hub — данные остаются в клинике, исследования идут">
+<meta property="og:description" content="Федеративная инфраструктура медицинских данных для RWD/RWE-исследований в закрытом государственном контуре.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23072A3C'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%235FB8C8' stroke-width='2' stroke-dasharray='2 4'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23F2A33A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#072A3C; --ink-2:#0E3A50; --teal:#0A8296; --teal-d:#066273; --aqua:#DCEFF4; --aqua-d:#5FB8C8;
+  --paper:#F6F9FA; --amber:#F2A33A; --amber-d:#8A5300; --line:rgba(7,42,60,.16); --muted:#4A6272;
+  --serif:'Literata',Georgia,'Times New Roman',serif; --sans:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--teal-d)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:3px}
+img{max-width:100%;height:auto}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.mark{display:flex;align-items:center;gap:10px;font:600 1.1rem var(--serif);color:#fff;text-decoration:none}
+.mark svg{display:block}
+.top nav{display:flex;gap:22px;margin-left:auto;font-size:.95rem}
+.top nav a{color:#C9DFE6;text-decoration:none}
+.top nav a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:6px;font:500 1rem var(--sans);text-decoration:none;border:1.5px solid transparent;cursor:pointer;line-height:1.2}
+.btn-demo{background:var(--amber);color:var(--ink)}
+.btn-demo:hover{background:#F7B65A}
+.btn-ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+.btn-ghost:hover{border-color:#fff}
+.top .btn{padding:8px 18px}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;padding:64px 0 72px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:5fr 6fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.35rem,4.6vw,3.85rem);line-height:1.06}
+.hero .lead{margin-top:22px;max-width:34rem;color:#C9DFE6;font-size:1.15rem}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:32px}
+.hero .cta a.link{color:#C9DFE6}
+.hero .note{margin-top:22px;font-size:.9rem;color:#8FB3C0;max-width:30rem}
+.diagram svg{width:100%;height:auto;display:block}
+.key{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:10px;font-size:.88rem;color:#C9DFE6}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{width:22px;height:0;border-top:3px solid;display:inline-block}
+.key .k-in{border-color:var(--aqua-d)}
+.key .k-out{border-color:var(--amber)}
+.key .k-q{border-top-style:dashed;border-color:var(--aqua-d)}
+
+/* sections */
+.sec{padding:84px 0;border-top:1px solid var(--line)}
+.sec.first{border-top:0}
+.sec .wrap{display:grid;grid-template-columns:3fr 9fr;gap:56px}
+.sec-h{position:sticky;top:92px;align-self:start}
+.sec-h h2{font-size:1.75rem;line-height:1.18}
+.sec-h p{margin-top:12px;color:var(--muted);font-size:.98rem}
+.body>*+*{margin-top:28px}
+.prose{max-width:40rem}
+.sec.tint{background:var(--aqua)}
+.sec.dark{background:var(--ink);color:#fff;border-top:0}
+.sec.dark .sec-h p{color:#9DBFCB}
+
+/* problem */
+.scale{display:grid;gap:18px}
+.scale .row{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center}
+.scale .lab{font-weight:500}
+.scale .track{height:34px;border-radius:4px;background:rgba(7,42,60,.06);position:relative}
+.scale .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.scale .f-old{width:100%;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 6px);background-color:rgba(7,42,60,.1)}
+.scale .f-old b{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-weight:600;background:var(--paper);padding:2px 8px;border-radius:3px}
+.scale .f-new{width:6px;background:var(--amber)}
+.scale .cap{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-weight:600;white-space:nowrap}
+.fine{font-size:.88rem;color:var(--muted)}
+
+/* how */
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;border-top:1px solid var(--line)}
+.steps li{counter-increment:s;display:grid;grid-template-columns:56px 1fr;gap:12px;padding:20px 0;border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s);font:600 1.6rem var(--serif);color:var(--teal-d)}
+.steps h3{font-size:1.2rem;margin-bottom:4px}
+.steps p{color:var(--muted);max-width:36rem}
+.pipe{margin-top:36px}
+.pipe h3{font-size:1.1rem;margin-bottom:12px}
+.pipe ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 0}
+.pipe li{padding:8px 16px 8px 14px;background:var(--aqua);position:relative;margin-right:14px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);padding-right:26px;font-size:.95rem}
+
+/* audiences */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs button{font:500 1rem var(--sans);padding:12px 18px;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--teal)}
+.panel{padding-top:26px}
+.panel[hidden]{display:none}
+.panel h3{font-size:1.5rem;line-height:1.2;max-width:30rem}
+.panel dl{margin:22px 0 0;display:grid;grid-template-columns:200px 1fr;border-top:1px solid var(--line)}
+.panel dt,.panel dd{margin:0;padding:14px 0;border-bottom:1px solid var(--line)}
+.panel dt{font-weight:600;padding-right:16px}
+.panel dd{color:#254556}
+.panel .go{display:inline-block;margin-top:20px;font-weight:500}
+
+/* demo */
+.frame{border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 1px 0 var(--line),0 24px 48px -28px rgba(7,42,60,.55);border:1px solid var(--line)}
+.frame-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#E8F0F3;border-bottom:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+.frame-bar i{width:10px;height:10px;border-radius:50%;background:#B9CBD3;display:inline-block}
+.frame-bar span{margin-left:10px}
+.frame img{display:block;width:100%}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips button{font:500 .95rem var(--sans);padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.demo-cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+
+/* market */
+.bars{display:grid;gap:14px}
+.bars .b{display:grid;grid-template-columns:1fr;gap:6px}
+.bars .t{height:44px;border-radius:4px;background:var(--teal);display:flex;align-items:center;padding:0 14px;color:#fff;font-weight:600;white-space:nowrap}
+.bars .t.s{background:var(--ink)}
+.bars .t.o{background:var(--amber);color:var(--ink)}
+.bars .d{font-size:.92rem;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line)}
+.facts div{padding:16px 0;border-bottom:1px solid var(--line)}
+.facts div:nth-child(odd){padding-right:20px}
+.facts b{font:600 1.5rem var(--serif);display:block}
+.facts span{color:var(--muted);font-size:.95rem}
+
+/* money */
+.rev{display:flex;align-items:flex-end;gap:14px;height:260px;padding:0 4px;border-bottom:1.5px solid var(--ink)}
+.rev .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
+.rev .c div{width:100%;background:var(--ink);border-radius:3px 3px 0 0;min-height:3px}
+.rev .c.pk div{background:var(--teal)}
+.rev .c.dn div{background:var(--aqua-d)}
+.rev .c b{font-weight:600;font-size:.95rem}
+.rev-x{display:flex;gap:14px;padding:6px 4px 0}
+.rev-x span{flex:1;text-align:center;color:var(--muted);font-size:.9rem}
+.money{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.money div{padding:18px 20px 18px 0;border-bottom:1px solid var(--line)}
+.money b{font:600 1.35rem var(--serif);display:block;margin-bottom:2px}
+.money span{color:var(--muted);font-size:.95rem}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.road::before{content:"";position:absolute;left:0;right:0;top:9px;border-top:2px solid var(--ink)}
+.road>div{padding:34px 20px 0 0;position:relative}
+.road>div::before{content:"";position:absolute;top:2px;left:0;width:16px;height:16px;border-radius:50%;background:var(--paper);border:3px solid var(--ink)}
+.road>div.now::before{background:var(--amber);border-color:var(--ink)}
+.road h3{font-size:1.15rem}
+.road .y{font-weight:600;color:var(--teal-d);margin-bottom:2px}
+.road p{font-size:.95rem;color:#254556;margin-top:8px}
+.road .res{font-size:.85rem;color:var(--muted);margin-top:10px}
+.status{border-top:1px solid var(--line);margin-top:48px;display:grid;grid-template-columns:200px 1fr}
+.status dt,.status dd{margin:0;padding:14px 0;border-bottom:1px solid var(--line)}
+.status dt{font-weight:600}
+
+/* table */
+.cmp{width:100%;border-collapse:collapse;font-size:1rem}
+.cmp th,.cmp td{text-align:left;padding:14px 16px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.cmp th{font-weight:500;color:var(--muted);font-size:.9rem}
+.cmp tr.us td{background:var(--aqua);font-weight:500;padding-left:14px}
+.cmp tr.us td:first-child{border-radius:6px 0 0 6px}
+
+/* team */
+.people{border-top:1px solid var(--line)}
+.people div{display:grid;grid-template-columns:240px 1fr;padding:16px 0;border-bottom:1px solid var(--line);gap:16px}
+.people b{font-weight:600}
+.grp{font-size:1.1rem;margin-bottom:-12px}
+.body>.grp+.people+.grp{margin-top:48px}
+.body>.people+.grp{margin-top:48px}
+.people strong{font-weight:600}
+.people span{color:#254556}
+
+/* contact */
+.contact h2{font-size:clamp(1.9rem,3.4vw,2.7rem);max-width:34rem;line-height:1.12}
+.contact p{color:#C9DFE6;max-width:32rem;margin-top:16px}
+.contact .cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+footer{background:var(--ink);color:#8FB3C0;font-size:.85rem;padding:0 0 36px}
+footer .wrap{border-top:1px solid rgba(255,255,255,.14);padding-top:22px;display:grid;gap:6px}
+
+/* finance + timeline */
+.sec-h,.body{min-width:0}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cmp.plan th[scope=row]{font-weight:500;color:var(--ink);font-size:1rem}
+.cmp.plan td,.cmp.plan th{padding-right:14px}
+.cmp.plan tr.tot th,.cmp.plan tr.tot td{font-weight:600}
+.scroll{overflow-x:auto}
+.rev-x small{display:block;font-size:.78rem;margin-top:2px}
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--ink)}
+.tl>li{display:grid;grid-template-columns:200px 1fr;gap:22px;padding:0 0 32px 28px;position:relative}
+.tl>li::before{content:"";position:absolute;left:-10px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--aqua);border:3px solid var(--ink)}
+.tl>li.now::before{background:var(--amber)}
+.tl .when b{display:block;font:600 1.15rem var(--serif);color:var(--teal-d);margin-bottom:4px}
+.tl .when span{display:block;font-size:.9rem;color:#254556}
+.tl h3{font-size:1.15rem;margin-bottom:8px}
+.tl ul{margin:0;padding:0;list-style:none;display:grid;gap:5px;color:#254556;font-size:.97rem;max-width:40rem}
+.tl ul b{font-weight:600;color:var(--ink)}
+@media (max-width:980px){
+  .hero .wrap,.sec .wrap{grid-template-columns:1fr;gap:28px}
+  .sec-h{position:static}
+  .sec{padding:60px 0}
+  .road{grid-template-columns:1fr 1fr;row-gap:30px}
+  .road::before{display:none}
+  .money{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .top nav a:not(.btn){display:none}
+  .top nav{margin-left:auto}
+  .wrap{padding:0 18px}
+  .hero{padding:40px 0 48px}
+  .scale .row{grid-template-columns:1fr;gap:6px}
+  .panel dl,.status,.people div{grid-template-columns:1fr}
+  .panel dt,.status dt{padding-bottom:2px;border-bottom:0}
+  .people div{gap:2px}
+  .road{grid-template-columns:1fr}
+  .tl>li{grid-template-columns:1fr;gap:8px}
+  .cmp.plan th[scope=row]{min-width:150px;white-space:normal}
+  .cmp.plan td{min-width:64px}
+  .facts{grid-template-columns:1fr}
+  .rev{height:200px;gap:8px}
+  .cmp{font-size:.92rem}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="RWD-Hub, в начало">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="#5FB8C8" stroke-width="2" stroke-dasharray="2 4.2"/><circle cx="16" cy="16" r="4" fill="#F2A33A"/></svg>
+      RWD-Hub
+    </a>
+    <nav aria-label="Разделы">
+      <a href="#how">Как это работает</a>
+      <a href="#audience">Для кого</a>
+      <a href="#roadmap">Дорожная карта</a>
+      <a class="btn btn-demo" href="demo.html" target="_blank" rel="noopener">Демо</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Данные остаются в клинике. Исследования идут.</h1>
+      <p class="lead">RWD-Hub — федеративная инфраструктура для безопасного доступа фармкомпаний и разработчиков ИИ к обезличенным медицинским данным. Всё происходит внутри закрытого государственного контура в рамках ЭПР.</p>
+      <div class="cta">
+        <a class="btn btn-demo" href="https://t.me/ogvknowsbest" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.35-.88 1.6.03 1.9l4.6 1.45 1.8 5.6c.2.65 1 .85 1.5.4l2.55-2.3 4.7 3.45c.6.45 1.45.1 1.6-.62L22.9 4.6c.2-.9-.65-1.45-1.4-1.1zM9.2 13.7l8.9-5.5-6.9 6.6-.3 3.1-1.7-4.2z" fill="currentColor"/></svg>Запрос на сотрудничество</a>
+      </div>
+      <p class="note">Демо — кликабельный прототип интерфейса платформы с вымышленными данными. Откроется в новой вкладке.</p>
+    </div>
+    <div class="diagram">
+      <svg viewBox="0 0 720 540" role="img" aria-labelledby="dg-t dg-d">
+        <title id="dg-t">Схема работы RWD-Hub</title>
+        <desc id="dg-d">Четыре клиники внутри закрытого контура передают в центральную модель только градиенты. Фармкомпания снаружи отправляет запрос и получает агрегированный отчёт через шлюз. Сырые данные контур не покидают.</desc>
+        <defs>
+          <marker id="ar-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#F2A33A"/></marker>
+          <marker id="ar-q" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5FB8C8"/></marker>
+        </defs>
+        <circle cx="285" cy="270" r="232" fill="#0E3A50" stroke="#5FB8C8" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"/>
+        <text x="285" y="76" text-anchor="middle" font-size="18" fill="#9ED4DF" font-family="Onest,sans-serif">Закрытый контур ЭПР</text>
+
+        <!-- gradient lines -->
+        <g stroke="#F2A33A" stroke-width="2" opacity=".6" fill="none">
+          <path d="M205 195 L252 237"/><path d="M365 195 L318 237"/><path d="M205 345 L252 303"/><path d="M365 345 L318 303"/>
+        </g>
+        <!-- hub -->
+        <circle cx="285" cy="270" r="52" fill="#072A3C" stroke="#F2A33A" stroke-width="2.5"/>
+        <text x="285" y="268" text-anchor="middle" font-size="16" font-weight="600" fill="#fff" font-family="Onest,sans-serif">RWD-Hub</text>
+        <text x="285" y="287" text-anchor="middle" font-size="12" fill="#9ED4DF" font-family="Onest,sans-serif">общая модель</text>
+
+        <!-- clinics -->
+        <g font-family="Onest,sans-serif" text-anchor="middle">
+          <g><rect x="132" y="135" width="96" height="60" rx="5" fill="#072A3C" stroke="#5FB8C8" stroke-width="1.5"/><text x="180" y="162" font-size="17" fill="#fff">Клиника</text><text x="180" y="182" font-size="13" fill="#9ED4DF">данные внутри</text></g>
+          <g><rect x="342" y="135" width="96" height="60" rx="5" fill="#072A3C" stroke="#5FB8C8" stroke-width="1.5"/><text x="390" y="162" font-size="17" fill="#fff">Клиника</text><text x="390" y="182" font-size="13" fill="#9ED4DF">данные внутри</text></g>
+          <g><rect x="132" y="345" width="96" height="60" rx="5" fill="#072A3C" stroke="#5FB8C8" stroke-width="1.5"/><text x="180" y="372" font-size="17" fill="#fff">Клиника</text><text x="180" y="392" font-size="13" fill="#9ED4DF">данные внутри</text></g>
+          <g><rect x="342" y="345" width="96" height="60" rx="5" fill="#072A3C" stroke="#5FB8C8" stroke-width="1.5"/><text x="390" y="372" font-size="17" fill="#fff">Клиника</text><text x="390" y="392" font-size="13" fill="#9ED4DF">данные внутри</text></g>
+        </g>
+
+        <!-- blocked raw data -->
+        <path d="M433 138 L447 112" stroke="#5FB8C8" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+        <circle cx="449" cy="108" r="10" fill="#072A3C" stroke="#5FB8C8" stroke-width="2"/>
+        <path d="M444.500 103.500 L453.500 112.500 M453.500 103.500 L444.500 112.500" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <text x="472" y="88" font-size="16" fill="#C9DFE6" font-family="Onest,sans-serif">сырые данные</text>
+        <text x="472" y="108" font-size="16" fill="#C9DFE6" font-family="Onest,sans-serif">не выходят</text>
+
+        <!-- query in / report out -->
+        <path d="M578 252 L346 252" stroke="#5FB8C8" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ar-q)"/>
+        <path d="M346 292 L574 292" stroke="#F2A33A" stroke-width="2.5" fill="none" marker-end="url(#ar-a)"/>
+        <text x="430" y="242" text-anchor="middle" font-size="16" fill="#9ED4DF" font-family="Onest,sans-serif">запрос</text>
+        <text x="428" y="322" text-anchor="middle" font-size="16" fill="#F7C985" font-family="Onest,sans-serif">агрегированный отчёт</text>
+
+        <!-- gate -->
+        <rect x="508" y="238" width="18" height="68" rx="4" fill="#072A3C" stroke="#F2A33A" stroke-width="2"/>
+        <text x="538" y="340" font-size="15" fill="#F7C985" font-family="Onest,sans-serif">шлюз: наружу</text><text x="538" y="359" font-size="15" fill="#F7C985" font-family="Onest,sans-serif">только агрегаты</text>
+
+        <!-- outside party -->
+        <rect x="582" y="230" width="132" height="84" rx="5" fill="none" stroke="#C9DFE6" stroke-width="1.5"/>
+        <text x="648" y="262" text-anchor="middle" font-size="17" fill="#fff" font-family="Onest,sans-serif">Фармкомпания</text>
+        <text x="648" y="284" text-anchor="middle" font-size="15" fill="#C9DFE6" font-family="Onest,sans-serif">разработчик ИИ</text>
+        <text x="648" y="304" text-anchor="middle" font-size="13" fill="#8FB3C0" font-family="Onest,sans-serif">снаружи контура</text>
+
+        <!-- moving gradients -->
+        <g class="flow" fill="#F2A33A">
+          <circle r="4.5"><animateMotion dur="2.4s" begin="-.1s" repeatCount="indefinite" path="M205 195 L252 237"/></circle>
+          <circle r="4.5"><animateMotion dur="2.4s" begin="-1.8s" repeatCount="indefinite" path="M365 195 L318 237"/></circle>
+          <circle r="4.5"><animateMotion dur="2.4s" begin="-1.2s" repeatCount="indefinite" path="M205 345 L252 303"/></circle>
+          <circle r="4.5"><animateMotion dur="2.4s" begin="-.6s" repeatCount="indefinite" path="M365 345 L318 303"/></circle>
+          <circle r="5.500"><animateMotion dur="3.2s" begin="-2s" repeatCount="indefinite" path="M346 292 L574 292"/></circle>
+          <circle r="5" fill="#5FB8C8"><animateMotion dur="3.2s" begin="-.1s" repeatCount="indefinite" path="M578 252 L346 252"/></circle>
+        </g>
+      </svg>
+      <div class="key">
+        <span><i class="k-in"></i>данные клиник — внутри контура</span>
+        <span><i class="k-out"></i>градиенты и агрегированные результаты</span>
+        <span><i class="k-q"></i>запрос заказчика</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec first" id="problem">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Доступ к данным — узкое место рынка</h2>
+      <p>ЭПР пока не запущен в промышленную эксплуатацию, а спрос на RWE растёт.</p>
+    </div>
+    <div class="body">
+      <p class="prose">Российские медицинские данные есть, но получить их для исследования долго: ограничения 152-ФЗ закрывают прямую передачу. Большинство решений обходят это юридическими оговорками. RWD-Hub решает ограничение архитектурно: данные не покидают защищённый контур, наружу выходят только обученная модель и агрегированный результат.</p>
+      <div class="scale" role="img" aria-label="Сравнение сроков: сейчас 8–16 месяцев, с RWD-Hub целевой срок 1 день">
+        <div class="row"><span class="lab">Сейчас</span><div class="track"><div class="fill f-old"><b>8–16 месяцев</b></div></div></div>
+        <div class="row"><span class="lab">С RWD-Hub</span><div class="track"><div class="fill f-new"></div><span class="cap" style="left:18px">1 день*</span></div></div>
+      </div>
+      <p class="fine">* Целевой срок доступа к данным — после запуска ЭПР и при соблюдении регуляторных условий. На этой шкале день почти не виден: так и выглядит разница.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint" id="how">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Как работает закрытый контур</h2>
+      <p>Четыре принципа, на которых построена платформа.</p>
+    </div>
+    <div class="body">
+      <ol class="steps">
+        <li><div><h3>Данные остаются внутри</h3><p>Edge-узлы стоят в клиниках в рамках ЭПР. Исходные записи хранятся в защищённой инфраструктуре и не выгружаются.</p></div></li>
+        <li><div><h3>Единые стандарты</h3><p>OMOP CDM v5.4 и FHIR Ru Core стандартизируют обмен и исследовательскую модель, поэтому данные разных клиник сопоставимы.</p></div></li>
+        <li><div><h3>Наружу идут только градиенты</h3><p>Федеративное обучение учит общую модель на данных всех клиник, не собирая сами данные в одном месте.</p></div></li>
+        <li><div><h3>Защита от восстановления</h3><p>Differential Privacy снижает риск восстановления исходных данных из передаваемых параметров.</p></div></li>
+      </ol>
+      <div class="pipe">
+        <h3>Путь запроса фармкомпании</h3>
+        <ol>
+          <li>Проверка юридической чистоты</li><li>Сбор данных</li><li>Обучение модели</li><li>Формирование отчёта</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="audience">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Что получает каждый участник</h2>
+      <p>Платформа работает с ролями: каждый видит только разрешённые разделы, сырые данные недоступны никому.</p>
+    </div>
+    <div class="body">
+      <div class="tabs" role="tablist" aria-label="Аудитория">
+        <button role="tab" id="t-inv" aria-selected="true" aria-controls="p-inv">Инвестору и партнёру</button>
+        <button role="tab" id="t-doc" aria-selected="false" aria-controls="p-doc" tabindex="-1">Главному врачу</button>
+        <button role="tab" id="t-ph" aria-selected="false" aria-controls="p-ph" tabindex="-1">Директору фармкомпании</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-inv" aria-labelledby="t-inv">
+        <h3>Инфраструктурный слой для рынка RWE в России</h3>
+        <dl>
+          <dt>Позиция</dt><dd>Единственная платформа в сравнении, где данные пациентов физически не покидают клинику: обучение идёт федеративно, наружу передаются только веса модели.</dd>
+          <dt>Модель</dt><dd>SaaS-подписка на аналитику, заказные RWE-исследования и подключение Edge-узлов к МИС. Клиники подключаются бесплатно ради предаудита ЕГИСЗ.</dd>
+          <dt>Партнёры</dt><dd>РосМедИнфо — соисполнитель с базой 500 тыс. пациентов; фармкомпании — потенциальные заказчики RWE-исследований.</dd>
+          <dt>Развитие</dt><dd>От первых клиник и пилотов к Топ-10 МИС, регионам и экспорту. Подробности — в дорожной карте ниже.</dd>
+        </dl>
+        <a class="go" href="demo.html#admin" target="_blank" rel="noopener">Посмотреть консоль администратора платформы в демо</a>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-doc" aria-labelledby="t-doc" hidden>
+        <h3>Аналитика качества ЭМК и подготовка к проверкам, а данные остаются у вас</h3>
+        <dl>
+          <dt>Данные</dt><dd>Edge-узел работает в вашем контуре. Наружу не уходят ни записи пациентов, ни их копии.</dd>
+          <dt>Качество ЭМК</dt><dd>Заполненность по отделениям, ошибки с детализацией, рекомендации по исправлению.</dd>
+          <dt>Предаудит ЕГИСЗ</dt><dd>Несоответствия требованиям выгрузки, оценка возможных штрафов, план исправлений.</dd>
+          <dt>Доход клиники</dt><dd>Доля от дохода платформы (RevShare) распределяется между подключёнными клиниками.</dd>
+        </dl>
+        <a class="go" href="demo.html#clinic" target="_blank" rel="noopener">Посмотреть рабочее место заведующего отделением в демо</a>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-ph" aria-labelledby="t-ph" hidden>
+        <h3>Доказательная база по российской практике без передачи данных</h3>
+        <dl>
+          <dt>Срок</dt><dd>Цель — доступ к данным за 1 день вместо 8–16 месяцев, после запуска ЭПР и при соблюдении регуляторных условий.</dd>
+          <dt>Запрос</dt><dd>Конструктор: нозология, препарат, значимые исходы, период, группы пациентов. Сразу видно размер когорты.</dd>
+          <dt>Результат</dt><dd>Статус запроса по этапам, отчёты в PDF и Excel, презентации, дашборды по завершённым исследованиям.</dd>
+          <dt>Доверие</dt><dd>Только агрегированные результаты. Методологию проверяет независимый врач-эксперт.</dd>
+        </dl>
+        <a class="go" href="demo.html#pharma" target="_blank" rel="noopener">Посмотреть кабинет менеджера RWE в демо</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="demo">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Платформа в действии</h2>
+      <p>Кликабельный прототип: четыре роли, фильтры, запросы, журнал аудита. Данные вымышленные.</p>
+    </div>
+    <div class="body">
+      <div class="chips" role="group" aria-label="Роль в прототипе">
+        <button type="button" data-shot="shot-clinic.jpg" data-alt="Дашборд качества ЭМК: заполненность, ошибки, динамика по неделям, рекомендации" aria-pressed="true">Клиника</button>
+        <button type="button" data-shot="shot-pharma.jpg" data-alt="Дашборд RWE-исследования: персистентность терапии и причины смены терапии" aria-pressed="false">Фармкомпания</button>
+        <button type="button" data-shot="shot-admin.jpg" data-alt="Консоль администратора: монитор федеративного обучения, метрики модели, участвующие узлы" aria-pressed="false">Администратор</button>
+      </div>
+      <div class="frame">
+        <div class="frame-bar"><i></i><i></i><i></i><span>RWD-Hub · прототип</span></div>
+        <img id="shot" src="shot-clinic.jpg" width="1440" height="900" alt="Дашборд качества ЭМК: заполненность, ошибки, динамика по неделям, рекомендации" loading="lazy">
+      </div>
+      <div class="demo-cta">
+        <a class="btn btn-demo" href="demo.html" target="_blank" rel="noopener">Демо</a>
+        <span class="fine" style="color:#9DBFCB">Откроется в новой вкладке. В правом верхнем углу можно переключать роли и тему.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint" id="roadmap">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Дорожная карта</h2>
+      <p>От первых клиник к федеральной сети и экспорту. Рост определяется числом подключённых МИС.</p>
+    </div>
+    <div class="body">
+      <ol class="tl"><li class=now><div class="when"><b>Декабрь 2026 – май 2027</b><span>Команда: 0</span></div><div><h3>Запуск</h3><ul><li><b>Технологии:</b> микросервис на сервере РосМедИнфо, тесты ML-моделей</li><li><b>Данные:</b> одна база, 500 тыс. пациентов</li><li><b>Продажи:</b> письмо о намерениях (LOI) с фармкомпанией на пилот</li></ul></div></li><li><div class="when"><b>2027</b><span>Клиник: 5–10</span><span>Команда: 13</span></div><div><h3>Первые клиники и пилоты</h3><ul><li><b>Технологии:</b> коннекторы к МИС (Медиалог, Барс, qMS), Edge-узлы, OMOP / FHIR, Control Plane</li><li><b>Данные:</b> 5–10 клиник, живые данные</li><li><b>Продажи:</b> пилоты клиник и фармы</li><li><b>Июнь 2027:</b> ввод MVP</li></ul></div></li><li><div class="when"><b>2028</b><span>Клиник: 30+</span><span>Команда: 25</span></div><div><h3>Топ-10 МИС</h3><ul><li><b>Технологии:</b> Топ-10 МИС, ЕМИАС и 1С, модуль для страховых</li><li><b>Данные:</b> 30+ клиник, Топ-10 МИС (80% рынка), ЛИС</li><li><b>Продажи:</b> SaaS-подписки фармы, страховые</li></ul></div></li><li><div class="when"><b>2029</b><span>Клиник: 100+</span><span>Команда: 45</span></div><div><h3>Регионы и генетика</h3><ul><li><b>Технологии:</b> алгоритмы «геном — терапия», IoT</li><li><b>Данные:</b> 15+ регионов (РМИС), генетические лаборатории</li><li><b>Продажи:</b> федеральная сеть, производители оборудования</li></ul></div></li><li><div class="when"><b>2030–2031</b><span>Клиник: 200 в 2030, 300 в 2031*</span><span>Команда: 65 в 2030, 102 в 2031</span></div><div><h3>Экспорт</h3><ul><li><b>Технологии:</b> кросс-граничное федеративное обучение</li><li><b>Данные:</b> международные сети (ЕАЭС, БРИКС)</li><li><b>Продажи:</b> экспорт лицензий</li></ul></div></li></ol>
+      <p class="fine">Без интеграции с МИС нет данных и нет продукта: в 2027 году первые 5–10 клиник и пилоты, в 2028 году Топ-10 МИС и масштабирование продаж. * Число клиник в 2031 году — допущение модели.</p>
+      <dl class="status">
+        <dt>Где мы сейчас</dt><dd>ООО регистрируется в декабре 2026 года. Команда и начало разработки — январь 2027, ввод MVP — июнь 2027.</dd>
+        <dt>Доступ к данным</dt><dd>Архитектура доступа финализируется, межведомственное согласование в процессе.</dd>
+        <dt>ЭПР</dt><dd>Пока не запущен в промышленную эксплуатацию. Практическое использование ожидается в конце 2026 или начале 2027 года.</dd>
+        <dt>Пилот</dt><dd>Начинаем с микросервиса на сервере РосМедИнфо и письма о намерениях от фармкомпании. В 2027 году — пилоты клиник и фармы.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="compare">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Чем отличаемся</h2>
+      <p>Ключевое преимущество — не юридическая оговорка вокруг передачи данных, а архитектура, где данные не покидают контур.</p>
+    </div>
+    <div class="body">
+      <table class="cmp">
+        <thead><tr><th scope="col">Компания</th><th scope="col">Фокус и отличие</th></tr></thead>
+        <tbody>
+          <tr><td>Webiomed</td><td>ИИ-аналитика для врачей, зависит от качества входных данных</td></tr>
+          <tr><td>Data MATRIX</td><td>RWE-исследования под заказ, инфраструктуру не строит</td></tr>
+          <tr><td>med-me</td><td>Экосистема с RWD-модулем, RWD в альфа-версии</td></tr>
+          <tr class="us"><td>RWD-Hub</td><td>Федеративная инфраструктура: защита данных заложена в архитектуру</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint" id="team">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Команда и партнёры</h2>
+      <p>RWE, ML и high-load в одной команде.</p>
+    </div>
+    <div class="body">
+      <h3 class="grp">Команда</h3>
+      <div class="people">
+        <div><b>CEO</b><span><strong>Огава Елена Афанасьевна.</strong> 20 лет в фарме, экспертиза в RWE</span></div>
+        <div><b>CTO</b><span>High-load, ML, федеративное обучение</span></div>
+        <div><b>Архитектор данных, Data Lead</b><span><strong>Бахронов Джамшид.</strong> Специалитет химфака МГУ, магистратура ВШЭ «Когнитивные науки и технологии», 20+ лет работы с базами данных. Отвечает за архитектуру данных, стандартизацию и аналитику</span></div>
+        <div><b>Рост команды</b><span>На конец года: 13 человек в 2027, 25 в 2028, 45 в 2029, 65 в 2030, 102 в 2031. В 2031 году: разработка 28, внедрение и поддержка 23, продажи 21, данные и ML 19, администрация 6, руководство 5</span></div>
+      </div>
+      <h3 class="grp">Партнёры и заказчики</h3>
+      <div class="people">
+        <div><b>РосМедИнфо</b><span>Соисполнитель: данные и клиническая экспертиза</span></div>
+        <div><b>ЗАО «ФармФирма «Сотекс»</b><span>Потенциальный заказчик RWE-исследований</span></div>
+        <div><b>АО Некстген / ПАО Артген Биотех</b><span>Потенциальный заказчик RWE-исследований</span></div>
+        <div><b>ООО МВС-Мед / АО Р-Фарм</b><span>Потенциальный заказчик RWE-исследований</span></div>
+      </div>
+      <h3 class="grp">Научная легитимность и стандартизация</h3>
+      <div class="people">
+        <div><b>Проф. Алексей Сергеевич Колбин</b><span>Д.м.н., руководитель рабочей группы RWD/RWE при Минздраве РФ. На стадии согласования</span></div>
+        <div><b>FHIR RU (HL7 Russia)</b><span>Ведутся переговоры. Сообщество подтверждает соответствие архитектуры требованиям ЕГИСЗ</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark contact" id="contact">
+  <div class="wrap">
+    <div class="sec-h"><h2 style="font-size:1.75rem">Контакты</h2></div>
+    <div class="body">
+      <h2>Покажем платформу и обсудим пилот</h2>
+      <p>Расскажем про архитектуру, условия подключения клиники и первые RWE-исследования.</p>
+      <div class="cta">
+        <a class="btn btn-demo" href="mailto:i@eogawa.ru">Написать нам</a>
+        <a class="btn btn-ghost" href="demo.html" target="_blank" rel="noopener">Демо</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>RWD-Hub · Национальная технологическая инициатива, рынок HealthNet</span>
+    <span>Интерфейс в демо — прототип с вымышленными данными. Сроки зависят от запуска ЭПР и регуляторных условий.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // reduced motion: stop moving dots
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var f = document.querySelector('.flow'); if (f) f.remove();
+  }
+  // audience tabs
+  var tabs = [].slice.call(document.querySelectorAll('[role=tab]'));
+  function pick(t){
+    tabs.forEach(function(x){
+      var on = x === t;
+      x.setAttribute('aria-selected', on);
+      x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ pick(t); });
+    t.addEventListener('keydown', function(e){
+      var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+      if (n === null) return;
+      n = (n + tabs.length) % tabs.length; tabs[n].focus(); pick(tabs[n]); e.preventDefault();
+    });
+  });
+  // demo screenshots
+  var img = document.getElementById('shot');
+  var chips = [].slice.call(document.querySelectorAll('.chips button'));
+  chips.forEach(function(c){
+    c.addEventListener('click', function(){
+      chips.forEach(function(x){ x.setAttribute('aria-pressed', x === c); });
+      img.src = c.dataset.shot; img.alt = c.dataset.alt;
+    });
+  });
+})();
+</script>
+</body>
+</html>
